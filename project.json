@@ -13,7 +13,8 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
     "Microsoft.AspNetCore.Owin": "1.0.0",
-    "Nancy": "2.0.0-barneyrubble"
+    "Nancy": "2.0.0-barneyrubble",
+    "MongoDB.Driver": "2.3.0"
   },
 
   "tools": {
