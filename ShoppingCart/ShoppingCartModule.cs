@@ -1,20 +1,18 @@
 namespace ShoppingCart.ShoppingCart
 {
-    using System.Linq;
-    using MongoDB.Bson;
-    using MongoDB.Bson.Serialization.Attributes;
-    using MongoDB.Driver;
-    using Nancy;
+  using System.Linq;
+  using MongoDB.Bson;
+  using MongoDB.Bson.Serialization.Attributes;
+  using MongoDB.Driver;
+  using Nancy;
   using Nancy.ModelBinding;
 
   public class ShoppingCartModule : NancyModule
   {
-
-    //,
-    // IProductCatalogClient productCatalog,
-    // IEventStore eventStore)
     public ShoppingCartModule (
-      IShoppingCartStore shoppingCartStore)
+      IShoppingCartStore shoppingCartStore,
+      IProductCatalogClient productCatalog,
+      IEventStore eventStore)
       : base("/shoppingcart")
     {
       Get("/{userid:int}", parameters => {
@@ -23,7 +21,7 @@ namespace ShoppingCart.ShoppingCart
       });
 
       Get("/prices", _ => {
-        var client = new MongoClient("mongodb://localhost:32771");
+        var client = new MongoClient("mongodb://localhost:32769");
         var db = client.GetDatabase("test");
         var collection = db.GetCollection<Price>("prices");
         var filter = new BsonDocument();
@@ -32,17 +30,26 @@ namespace ShoppingCart.ShoppingCart
         return prices;
       });
       
-      // Post("/{userid:int}/items", async(parameters, _) => {
-      //   var productCatalogIds = this.Bind<int[]>();
-      //   var userId = (int) parameters.userid;
-      //   var shoppingCart = shoppingCartStore.Get(userId);
-      //   var shoppingCartItems = await
-      //     productCatalog.GetShoppingCartItems(productCatalogIds)
-      //       .ConfigureAwait(false);
-      //   shoppingCart.AddItems(shoppingCartItems, eventStore);
-      //   shoppingCartStore.Save(shoppingCart);
-      //   return shoppingCart;
-      // });
+      Post("/{userid:int}/items", async(parameters, _) => {
+        var productCatalogIds = this.Bind<int[]>();
+        var userId = (int) parameters.userid;
+        var shoppingCart = shoppingCartStore.Get(userId);
+        var shoppingCartItems = await
+          productCatalog.GetShoppingCartItems(productCatalogIds)
+            .ConfigureAwait(false);
+        shoppingCart.AddItems(shoppingCartItems, eventStore);
+        shoppingCartStore.Save(shoppingCart);
+        return shoppingCart;
+      });
+
+      Delete("/{userid:int}/items", parameters => {
+        var productCatalogIds = this.Bind<int[]>();
+        var userId = (int) parameters.userid;
+        var shoppingCart = shoppingCartStore.Get(userId);
+        shoppingCart.RemoveItems(productCatalogIds, eventStore);
+        shoppingCartStore.Save(shoppingCart);
+        return shoppingCart;
+      });
     }
 
     public class Price
