@@ -22,6 +22,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="1.0.2" />
     <PackageReference Include="Nancy" Version="2.0.0-barneyrubble" />
     <PackageReference Include="MongoDB.Driver" Version="2.3.0" />
+    <PackageReference Include="Polly" Version="5.1.0" />
   </ItemGroup>
 
 </Project>

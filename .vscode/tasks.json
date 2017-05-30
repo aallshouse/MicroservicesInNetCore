@@ -7,7 +7,7 @@
         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}//project.json"
+                "${workspaceRoot}//MicroservicesInNetCore.csproj"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
