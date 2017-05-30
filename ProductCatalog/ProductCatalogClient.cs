@@ -9,49 +9,12 @@ public interface IProductCatalogClient
 
 public class ProductCatalogClient : IProductCatalogClient
 {
-  private IEnumerable<Item> productCatalog;
+  private static string productCatalogBaseUrl = 
+    @"http://private-7d5bc3-productcatalog18.apiary-mock.com";
+  private static string getProductPathTemplate = 
+    "/products?productIds=[{0}]";
 
-  public ProductCatalogClient()
-  {
-    productCatalog = new List<Item>{
-        new Item{
-          ProductCatalogId = 1,
-          ProductName = "Basic t-shirt",
-          Description = "a quiet t-shirt",
-          Price = new Price{
-            Currency = "eur",
-            Amount = 40
-          }
-        },
-        new Item{
-          ProductCatalogId = 2,
-          ProductName = "Fancy shirt",
-          Description = "a loud t-shirt",
-          Price = new Price{
-            Currency = "eur",
-            Amount = 50
-          }
-        },
-        new Item{
-          ProductCatalogId = 3,
-          ProductName = "Vitamin Water",
-          Description = "XXX flavored water with vitamins",
-          Price = new Price{
-            Currency = "eur",
-            Amount = 2
-          }
-        },
-        new Item{
-          ProductCatalogId = 4,
-          ProductName = "Apple Watch",
-          Description = "watch made by Apple",
-          Price = new Price{
-            Currency = "eur",
-            Amount = 500
-          }
-        }
-      };
-  }
+  private IEnumerable<Item> productCatalog;
 
   public async Task<IEnumerable<Item>> GetShoppingCartItems(IEnumerable<int> ids)
   {

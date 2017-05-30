@@ -14,26 +14,6 @@ public class ShoppingCartStore : IShoppingCartStore
   public ShoppingCartStore()
   {
     Cart = new Cart();
-    Cart.AddItems(new List<Item>{
-        new Item{
-          ProductCatalogId = 1,
-          ProductName = "Basic t-shirt",
-          Description = "a quiet t-shirt",
-          Price = new Price{
-            Currency = "eur",
-            Amount = 40
-          }
-        },
-        new Item{
-          ProductCatalogId = 2,
-          ProductName = "Fancy shirt",
-          Description = "a loud t-shirt",
-          Price = new Price{
-            Currency = "eur",
-            Amount = 50
-          }
-        }
-      }, new EventStore());
   }
   
   public Cart Get(int userId)
