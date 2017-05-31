@@ -44,6 +44,7 @@ public class Cart
     foreach(var item in items)
     {
       Items.Add(item);
+      eventStore.Raise("ShoppingCartItemAdded", new { UserId, item });
     }
     eventStore.Log("Adding items to the cart");
   }
@@ -54,13 +55,10 @@ public class Cart
     foreach(int productCatalogId in productCatalogIds)
     {
       item = Items.Find(i => i.ProductCatalogId == productCatalogId);
-      break;
-    }
-    if(item != null)
-    {
       Items.Remove(item);
-      eventStore.Log("Removing items from the cart");
+      eventStore.Raise("ShoppingCartItemRemoved", new { UserId, item });
     }
+    eventStore.Log("Removing items from the cart");
   }
 }
 
